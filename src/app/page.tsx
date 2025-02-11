@@ -1,5 +1,5 @@
 'use client';
-import { CSSProperties, useState, useEffect, useRef } from 'react';
+import { CSSProperties, useState, useEffect } from 'react';
 import Image from 'next/image';
 
 // Theme constants
@@ -109,36 +109,49 @@ const FeatureCard = ({
 function Section1({ isMobile }: { isMobile: boolean }) {
     return (
         <section
-            className={`${styles.section.base} flex flex-col items-center justify-around`}
+            className={`${styles.section.base} flex flex-col`}
             style={{ backgroundColor: THEME.colors.background }}
         >
             <BackgroundImage name='bg1' />
-            <div className='text-center z-10 p-4 w-full'>
-                <h1
-                    className='mb-4 text-white'
-                    style={styles.text.hero(isMobile)}
-                >
-                    Be seen where you are
-                </h1>
-                <h2
-                    className='mb-4'
-                    style={{
-                        ...styles.text.hero(isMobile),
-                        background: !isMobile ? THEME.gradients.purple : 'none',
-                        WebkitBackgroundClip: !isMobile ? 'text' : 'unset',
-                        WebkitTextFillColor: !isMobile
-                            ? 'transparent'
-                            : THEME.colors.text,
-                        marginTop: isMobile ? '-1rem' : '-4rem',
-                        marginLeft: isMobile ? '0' : '20%',
-                    }}
-                >
-                    where you are matters
-                </h2>
-                <p className='text-white text-base mb-8 max-w-lg mx-auto'>
-                    The dating app that brings you real connections, right where
-                    you are at.
-                </p>
+            <nav
+                className={`w-full py-4 z-10 ${
+                    !isMobile ? 'bg-[#101010]' : ''
+                }`}
+            >
+                <div className='container mx-auto px-4 flex justify-between items-center'>
+                    <div className='text-white font-bold text-3xl'>scene</div>
+                </div>
+            </nav>
+            <div className='flex-grow flex flex-col items-center justify-around'>
+                <div className='text-center z-10 p-4 w-full'>
+                    <h1
+                        className='mb-4 text-white'
+                        style={styles.text.hero(isMobile)}
+                    >
+                        Be seen where you are
+                    </h1>
+                    <h2
+                        className='mb-4'
+                        style={{
+                            ...styles.text.hero(isMobile),
+                            background: !isMobile
+                                ? THEME.gradients.purple
+                                : 'none',
+                            WebkitBackgroundClip: !isMobile ? 'text' : 'unset',
+                            WebkitTextFillColor: !isMobile
+                                ? 'transparent'
+                                : THEME.colors.text,
+                            marginTop: isMobile ? '-1rem' : '-4rem',
+                            marginLeft: isMobile ? '0' : '20%',
+                        }}
+                    >
+                        where you are matters
+                    </h2>
+                    <p className='text-white text-base mb-8 max-w-lg mx-auto'>
+                        The dating app that brings you real connections, right
+                        where you are at.
+                    </p>
+                </div>
             </div>
         </section>
     );
@@ -231,7 +244,7 @@ function Section3({ isMobile }: { isMobile: boolean }) {
 function Section4({ isMobile }: { isMobile: boolean }) {
     return (
         <section
-            className={`${styles.section.base} ${styles.section.centered}`}
+            className={`${styles.section.base} flex flex-col`}
             style={{ backgroundColor: THEME.colors.background }}
         >
             <div
@@ -245,83 +258,25 @@ function Section4({ isMobile }: { isMobile: boolean }) {
                     height: '100vh',
                 }}
             />
-            <div className='text-center z-10 p-4'>
-                <h2 className='mb-4' style={styles.text.heading(isMobile)}>
-                    Ready to be seen?
-                </h2>
-                <p className='mb-8' style={styles.text.paragraph(isMobile)}>
-                    Download the app from your app store:
-                </p>
-                <div className='flex justify-center gap-8'>
-                    <a href='#' className='text-white hover:opacity-80'>
-                        App Store ↗
-                    </a>
-                    <a href='#' className='text-white hover:opacity-80'>
-                        Play Store ↗
-                    </a>
+            <div className='flex-grow flex items-center justify-center'>
+                <div className='text-center z-10 p-4'>
+                    <h2 className='mb-4' style={styles.text.heading(isMobile)}>
+                        Ready to be seen?
+                    </h2>
+                    <p className='mb-8' style={styles.text.paragraph(isMobile)}>
+                        Download the app from your app store:
+                    </p>
+                    <div className='flex justify-center gap-8'>
+                        <a href='#' className='text-white hover:opacity-80'>
+                            App Store ↗
+                        </a>
+                        <a href='#' className='text-white hover:opacity-80'>
+                            Play Store ↗
+                        </a>
+                    </div>
                 </div>
             </div>
-        </section>
-    );
-}
-
-export default function Home() {
-    const [isMobile, setIsMobile] = useState(false);
-    const [showNav, setShowNav] = useState(true);
-    const section4Ref = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 768);
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    useEffect(() => {
-        const currentRef = section4Ref.current; // Store ref value
-        const observer = new IntersectionObserver(
-            ([entry]) => setShowNav(!entry.isIntersecting),
-            { threshold: 0.1 }
-        );
-
-        if (currentRef) {
-            observer.observe(currentRef);
-        }
-
-        return () => {
-            if (currentRef) {
-                observer.unobserve(currentRef);
-            }
-        };
-    }, []);
-
-    return (
-        <div className='h-screen flex flex-col overflow-hidden'>
-            {showNav && (
-                <nav
-                    className='w-full py-4 z-10'
-                    style={{
-                        backgroundColor: THEME.colors.background,
-                    }}
-                >
-                    <div className='container mx-auto px-4 flex justify-between items-center'>
-                        <div className='text-white font-bold text-3xl'>
-                            scene
-                        </div>
-                    </div>
-                </nav>
-            )}
-
-            <main className='flex-grow snap-y snap-mandatory overflow-y-auto scroll-smooth'>
-                <Section1 isMobile={isMobile} />
-                <Section2 isMobile={isMobile} />
-                <Section3 isMobile={isMobile} />
-                <div ref={section4Ref}>
-                    <Section4 isMobile={isMobile} />
-                </div>
-            </main>
-
-            <footer className='w-full py-6 bg-[#101010] text-white'>
+            <footer className='w-full py-6 z-10 bg-[#101010]'>
                 <div className='container mx-auto px-4'>
                     <div
                         className={`flex ${
@@ -330,25 +285,47 @@ export default function Home() {
                                 : 'justify-between items-center'
                         }`}
                     >
-                        <div className='text-3xl font-bold mb-4'>scene.</div>
+                        <div className='text-3xl font-bold mb-4 text-white'>
+                            scene.
+                        </div>
                         <div
                             className={`flex gap-8 ${
                                 isMobile ? 'flex-col' : ''
                             }`}
                         >
-                            <a href='#' className='hover:opacity-80'>
+                            <a href='#' className='text-white hover:opacity-80'>
                                 Privacy Policy
                             </a>
-                            <a href='#' className='hover:opacity-80'>
+                            <a href='#' className='text-white hover:opacity-80'>
                                 Terms of Service
                             </a>
-                            <a href='#' className='hover:opacity-80'>
+                            <a href='#' className='text-white hover:opacity-80'>
                                 Contact
                             </a>
                         </div>
                     </div>
                 </div>
             </footer>
-        </div>
+        </section>
+    );
+}
+
+export default function Home() {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return (
+        <main className='h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth'>
+            <Section1 isMobile={isMobile} />
+            <Section2 isMobile={isMobile} />
+            <Section3 isMobile={isMobile} />
+            <Section4 isMobile={isMobile} />
+        </main>
     );
 }
